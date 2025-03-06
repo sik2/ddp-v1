@@ -1,0 +1,26 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="300" height="200" viewBox="0 0 300 200">
+  <rect width="300" height="200" fill="#F9FAFB" />
+  
+  <!-- 비빔밥 그릇 -->
+  <circle cx="150" cy="110" r="70" fill="#F3F4F6" stroke="#E5E7EB" stroke-width="2" />
+  <circle cx="150" cy="110" r="60" fill="#FEF3C7" />
+  
+  <!-- 비빔밥 내용물 -->
+  <circle cx="150" cy="110" r="30" fill="#FBBF24" /> <!-- 노른자 -->
+  
+  <!-- 나물들 -->
+  <rect x="120" y="80" width="15" height="40" rx="2" fill="#34D399" transform="rotate(45, 120, 80)" /> <!-- 시금치 -->
+  <rect x="180" y="80" width="15" height="40" rx="2" fill="#34D399" transform="rotate(-45, 180, 80)" /> <!-- 시금치 -->
+  <rect x="120" y="140" width="15" height="40" rx="2" fill="#F87171" transform="rotate(-45, 120, 140)" /> <!-- 당근 -->
+  <rect x="180" y="140" width="15" height="40" rx="2" fill="#F87171" transform="rotate(45, 180, 140)" /> <!-- 당근 -->
+  
+  <!-- 고추장 -->
+  <path d="M150 60 Q170 80 150 100 Q130 80 150 60" fill="#EF4444" />
+  
+  <!-- 젓가락 -->
+  <rect x="220" y="70" width="40" height="4" rx="2" fill="#92400E" transform="rotate(45, 220, 70)" />
+  <rect x="225" y="75" width="40" height="4" rx="2" fill="#92400E" transform="rotate(45, 225, 75)" />
+  
+  <!-- 텍스트 -->
+  <text x="150" y="30" font-family="Arial" font-size="16" font-weight="bold" text-anchor="middle" fill="#1F2937">비빔밥</text>
+</svg> 
