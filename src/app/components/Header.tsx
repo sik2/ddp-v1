@@ -2,11 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 
 export default function Header() {
-  const navItems = [
-    { href: "/맛집리스트", text: "맛집리스트" },
-    { href: "/인기맛집", text: "인기맛집" },
-    { href: "/신규맛집", text: "신규맛집" },
-  ];
+  const navItems = [{ href: "/맛집리스트", text: "맛집리스트" }];
 
   return (
     <header className="bg-white shadow-sm p-4 border-b border-slate-200/80">
@@ -21,7 +17,7 @@ export default function Header() {
               priority
             />
           </div>
-          <div className="flex flex-col">
+          <div className="hidden sm:flex flex-col">
             <span className="font-bold text-slate-700 text-lg leading-tight">
               DDP
             </span>
@@ -45,9 +41,12 @@ export default function Header() {
           </nav>
         </div>
 
-        <button className="bg-yellow-400 text-white px-4 py-2 rounded-md font-medium hover:bg-yellow-500 transition-colors duration-300 shadow-sm">
-          로그인
-        </button>
+        <Link
+          href="/신규맛집"
+          className="bg-yellow-400 text-white px-4 py-2 rounded-md font-medium hover:bg-yellow-500 transition-colors duration-300 shadow-sm"
+        >
+          신규맛집 등록
+        </Link>
       </div>
     </header>
   );
