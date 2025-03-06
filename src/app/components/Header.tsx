@@ -1,8 +1,17 @@
+"use client";
+
 import Image from "next/image";
 import Link from "next/link";
 
 export default function Header() {
-  const navItems = [{ href: "/맛집리스트", text: "맛집리스트" }];
+  const navItems = [
+    { href: "/", text: "맛집" },
+    { href: "/cafe", text: "카페" },
+  ];
+
+  const handleNewRegistration = () => {
+    alert("준비중입니다.");
+  };
 
   return (
     <header className="bg-white shadow-sm p-4 border-b border-slate-200/80">
@@ -41,12 +50,12 @@ export default function Header() {
           </nav>
         </div>
 
-        <Link
-          href="/신규맛집"
-          className="bg-yellow-400 text-white px-4 py-2 rounded-md font-medium hover:bg-yellow-500 transition-colors duration-300 shadow-sm"
+        <button
+          onClick={handleNewRegistration}
+          className="bg-yellow-400 text-white px-4 py-2 rounded-md font-medium hover:bg-yellow-500 active:bg-yellow-600 focus:outline-none focus:ring-2 focus:ring-yellow-300 transform hover:scale-105 active:scale-95 transition-all duration-200 shadow-sm cursor-pointer"
         >
-          신규맛집 등록
-        </Link>
+          신규 등록
+        </button>
       </div>
     </header>
   );

@@ -6,6 +6,7 @@ interface RestaurantCardProps {
   views: number;
   date: string;
   emoji: string;
+  mapUrl?: string; // 네이버 지도 URL (선택적)
 }
 
 export default function RestaurantCard({
@@ -16,6 +17,7 @@ export default function RestaurantCard({
   views,
   date,
   emoji,
+  mapUrl,
 }: RestaurantCardProps) {
   return (
     <div className="bg-white rounded-lg overflow-hidden shadow-sm border border-slate-200/80 hover:border-yellow-400 transition-colors duration-300">
@@ -40,7 +42,37 @@ export default function RestaurantCard({
           </div>
         </div>
         <h3 className="text-xl font-bold mb-2 text-slate-700">{name}</h3>
-        <p className="text-slate-500 mb-4">{location}</p>
+        <p className="text-slate-500 mb-2">{location}</p>
+        {mapUrl ? (
+          <a
+            href={mapUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-blue-500 mb-4 hover:text-yellow-500 transition-colors duration-300 flex items-center text-sm"
+          >
+            <svg
+              className="w-4 h-4 mr-1"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth="2"
+                d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"
+              ></path>
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth="2"
+                d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"
+              ></path>
+            </svg>
+            네이버 지도에서 보기
+          </a>
+        ) : null}
         <div className="flex items-center justify-between text-sm text-slate-500">
           <span>조회수 {views.toLocaleString()}</span>
           <span>{date}</span>
