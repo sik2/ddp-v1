@@ -1,8 +1,6 @@
 import Header from "./components/Header";
 import SearchFilter from "./components/SearchFilter";
 import RestaurantCard from "./components/RestaurantCard";
-import PopularRestaurant from "./components/PopularRestaurant";
-import CategoryItem from "./components/CategoryItem";
 import Footer from "./components/Footer";
 import Image from "next/image";
 
@@ -143,30 +141,6 @@ export default function Home() {
     },
   ];
 
-  // 인기 맛집 데이터
-  const popularRestaurants = [
-    {
-      id: 1,
-      name: "치킨마을",
-      views: 5678,
-      emoji: "🍗",
-    },
-    {
-      id: 2,
-      name: "라멘하우스",
-      views: 4321,
-      emoji: "🍜",
-    },
-  ];
-
-  // 카테고리 데이터
-  const categories = [
-    { id: 1, name: "한식", count: 45, emoji: "🍚" },
-    { id: 2, name: "중식", count: 32, emoji: "🥢" },
-    { id: 3, name: "일식", count: 28, emoji: "🍱" },
-    { id: 4, name: "양식", count: 23, emoji: "🍕" },
-  ];
-
   return (
     <main className="min-h-screen">
       {/* 헤더 영역 */}
@@ -217,7 +191,7 @@ export default function Home() {
         </div>
       </div>
 
-      {/* 맛집 리스트 섹션 */}
+      {/* 맛집 섹션 */}
       <div className="container mx-auto mt-8 sm:mt-10 md:mt-12 px-4">
         <div className="p-4 sm:p-6 bg-white rounded-xl border border-slate-200/80 shadow-sm">
           <h2 className="text-xl sm:text-2xl font-bold mb-4 sm:mb-6 pb-2 border-b border-yellow-400 inline-block text-slate-700">
