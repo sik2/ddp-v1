@@ -3,13 +3,12 @@ import SearchFilter from "./components/SearchFilter";
 import Footer from "./components/Footer";
 import Image from "next/image";
 import EstablishmentCard from "./components/EstablishmentCard";
-import { getRestaurants, getPopularRestaurants } from "@/lib/api";
+import { getRestaurants } from "@/lib/api";
 import { Establishment } from "@/types";
 
 export default async function Home() {
   // Supabase에서 맛집 데이터 가져오기
   const restaurants: Establishment[] = await getRestaurants();
-  const popularRestaurants: Establishment[] = await getPopularRestaurants(4);
 
   return (
     <main className="min-h-screen">
@@ -54,44 +53,10 @@ export default async function Home() {
         </div>
       </div>
 
-      {/* 인기 맛집 섹션 */}
-      <div className="container mx-auto mt-8 sm:mt-10 md:mt-12 px-4">
-        <div className="p-6 bg-white rounded-xl border border-gray-200">
-          <h2 className="text-xl sm:text-2xl font-bold mb-4 sm:mb-6 pb-2 border-b-2 border-yellow-400 inline-block text-slate-700">
-            인기 맛집
-          </h2>
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4">
-            {popularRestaurants.map((restaurant) => (
-              <EstablishmentCard
-                key={restaurant.id}
-                establishment={restaurant}
-              />
-            ))}
-          </div>
-        </div>
-      </div>
-
-      {/* 검색 필터 영역 - 별개로 분리 */}
+      {/* 검색 필터 및 맛집 목록 영역 */}
       <div className="container mx-auto mt-8 sm:mt-10 md:mt-12 px-4">
         <div className="bg-white rounded-xl border border-slate-200/80 shadow-sm p-4 sm:p-6">
-          <SearchFilter />
-        </div>
-      </div>
-
-      {/* 맛집 섹션 */}
-      <div className="container mx-auto mt-8 sm:mt-10 md:mt-12 px-4">
-        <div className="p-4 sm:p-6 bg-white rounded-xl border border-slate-200/80 shadow-sm">
-          <h2 className="text-xl sm:text-2xl font-bold mb-4 sm:mb-6 pb-2 border-b border-yellow-400 inline-block text-slate-700">
-            맛집
-          </h2>
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-            {restaurants.map((restaurant) => (
-              <EstablishmentCard
-                key={restaurant.id}
-                establishment={restaurant}
-              />
-            ))}
-          </div>
+          <SearchFilter allRestaurants={restaurants} />
         </div>
       </div>
 

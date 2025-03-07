@@ -3,13 +3,12 @@ import CafeSearchFilter from "../components/CafeSearchFilter";
 import Footer from "../components/Footer";
 import Image from "next/image";
 import EstablishmentCard from "../components/EstablishmentCard";
-import { getCafes, getPopularCafes } from "@/lib/api";
+import { getCafes } from "@/lib/api";
 import { Establishment } from "@/types";
 
 export default async function CafePage() {
   // Supabase에서 카페 데이터 가져오기
   const cafes: Establishment[] = await getCafes();
-  const popularCafes: Establishment[] = await getPopularCafes(4);
 
   return (
     <main className="min-h-screen">
@@ -54,38 +53,10 @@ export default async function CafePage() {
         </div>
       </div>
 
-      {/* 인기 카페 섹션 */}
-      <div className="container mx-auto mt-8 sm:mt-10 md:mt-12 px-4">
-        <div className="p-6 bg-white rounded-xl border border-gray-200">
-          <h2 className="text-xl sm:text-2xl font-bold mb-4 sm:mb-6 pb-2 border-b-2 border-blue-400 inline-block text-slate-700">
-            인기 카페
-          </h2>
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4">
-            {popularCafes.map((cafe) => (
-              <EstablishmentCard key={cafe.id} establishment={cafe} />
-            ))}
-          </div>
-        </div>
-      </div>
-
-      {/* 검색 필터 영역 - 별개로 분리 */}
+      {/* 검색 필터 및 카페 목록 영역 */}
       <div className="container mx-auto mt-8 sm:mt-10 md:mt-12 px-4">
         <div className="bg-white rounded-xl border border-slate-200/80 shadow-sm p-4 sm:p-6">
-          <CafeSearchFilter />
-        </div>
-      </div>
-
-      {/* 카페 섹션 */}
-      <div className="container mx-auto mt-8 sm:mt-10 md:mt-12 px-4">
-        <div className="p-4 sm:p-6 bg-white rounded-xl border border-slate-200/80 shadow-sm">
-          <h2 className="text-xl sm:text-2xl font-bold mb-4 sm:mb-6 pb-2 border-b border-blue-400 inline-block text-slate-700">
-            카페
-          </h2>
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-            {cafes.map((cafe) => (
-              <EstablishmentCard key={cafe.id} establishment={cafe} />
-            ))}
-          </div>
+          <CafeSearchFilter allCafes={cafes} />
         </div>
       </div>
 
