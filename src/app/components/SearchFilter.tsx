@@ -1,19 +1,17 @@
 "use client";
 
 import { useState, useEffect, useRef } from "react";
-import { Establishment } from "@/types";
-import EstablishmentCard from "./EstablishmentCard";
+import { Spot } from "@/types";
+import SpotCard from "./SpotCard";
 
 interface SearchFilterProps {
-  allRestaurants: Establishment[];
+  allSpots: Spot[];
 }
 
-export default function SearchFilter({ allRestaurants }: SearchFilterProps) {
+export default function SearchFilter({ allSpots }: SearchFilterProps) {
   const [selectedArea, setSelectedArea] = useState("영역선택");
   const [isOpen, setIsOpen] = useState(false);
-  const [filteredRestaurants, setFilteredRestaurants] = useState<
-    Establishment[]
-  >([]);
+  const [filteredSpots, setFilteredSpots] = useState<Spot[]>([]);
   const dropdownRef = useRef<HTMLDivElement>(null);
 
   const areas = [
@@ -35,20 +33,18 @@ export default function SearchFilter({ allRestaurants }: SearchFilterProps) {
 
     // 영역 선택에 따라 필터링
     if (area === "영역선택") {
-      setFilteredRestaurants(allRestaurants); // 모든 맛집 표시
+      setFilteredSpots(allSpots); // 모든 맛집 표시
     } else {
       // 선택된 색상에 해당하는 맛집만 필터링
-      const filtered = allRestaurants.filter(
-        (restaurant) => restaurant.color?.name === area
-      );
-      setFilteredRestaurants(filtered);
+      const filtered = allSpots.filter((spot) => spot.color?.name === area);
+      setFilteredSpots(filtered);
     }
   };
 
   // 초기 로딩 시 모든 맛집 표시
   useEffect(() => {
-    setFilteredRestaurants(allRestaurants);
-  }, [allRestaurants]);
+    setFilteredSpots(allSpots);
+  }, [allSpots]);
 
   // 드롭다운 외부 클릭 시 닫기
   useEffect(() => {
@@ -142,13 +138,8 @@ export default function SearchFilter({ allRestaurants }: SearchFilterProps) {
           {selectedArea === "영역선택" ? "모든 맛집" : `${selectedArea} 맛집`}
         </h2>
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-          {filteredRestaurants.length > 0 ? (
-            filteredRestaurants.map((restaurant) => (
-              <EstablishmentCard
-                key={restaurant.id}
-                establishment={restaurant}
-              />
-            ))
+          {filteredSpots.length > 0 ? (
+            filteredSpots.map((spot) => <SpotCard key={spot.id} spot={spot} />)
           ) : (
             <p className="col-span-full text-center py-8 text-slate-500">
               해당 영역에 맛집이 없습니다.

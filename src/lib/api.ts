@@ -1,5 +1,5 @@
 import { supabase } from "./supabase";
-import { Establishment, Category, Color } from "../types";
+import { Spot, Category, Color, Notice } from "../types";
 
 // 카테고리 가져오기
 export async function getCategories(): Promise<Category[]> {
@@ -29,9 +29,9 @@ export async function getColors(): Promise<Color[]> {
 }
 
 // 모든 맛집 및 카페 데이터 가져오기
-export async function getAllEstablishments(): Promise<Establishment[]> {
+export async function getAllSpots(): Promise<Spot[]> {
   const { data, error } = await supabase
-    .from("establishments")
+    .from("spots")
     .select(
       `
       *,
@@ -50,9 +50,9 @@ export async function getAllEstablishments(): Promise<Establishment[]> {
 }
 
 // 카테고리별 맛집 및 카페 데이터 가져오기
-export async function getEstablishmentsByCategory(
+export async function getSpotsByCategory(
   categoryName: string
-): Promise<Establishment[]> {
+): Promise<Spot[]> {
   const { data: categoryData, error: categoryError } = await supabase
     .from("categories")
     .select("id")
@@ -67,7 +67,7 @@ export async function getEstablishmentsByCategory(
   const categoryId = categoryData.id;
 
   const { data, error } = await supabase
-    .from("establishments")
+    .from("spots")
     .select(
       `
       *,
@@ -87,10 +87,10 @@ export async function getEstablishmentsByCategory(
 }
 
 // 색상별 맛집 및 카페 데이터 가져오기
-export async function getEstablishmentsByColor(
+export async function getSpotsByColor(
   colorName: string,
   categoryName?: string
-): Promise<Establishment[]> {
+): Promise<Spot[]> {
   // 색상 ID 가져오기
   const { data: colorData, error: colorError } = await supabase
     .from("colors")
@@ -107,7 +107,7 @@ export async function getEstablishmentsByColor(
 
   // 기본 쿼리 설정
   let query = supabase
-    .from("establishments")
+    .from("spots")
     .select(
       `
       *,
@@ -146,27 +146,88 @@ export async function getEstablishmentsByColor(
 }
 
 // 맛집 데이터 가져오기
-export async function getRestaurants(): Promise<Establishment[]> {
-  return getEstablishmentsByCategory("맛집");
+export async function getRestaurants(): Promise<Spot[]> {
+  return getSpotsByCategory("맛집");
 }
 
 // 카페 데이터 가져오기
-export async function getCafes(): Promise<Establishment[]> {
-  return getEstablishmentsByCategory("카페");
+export async function getCafes(): Promise<Spot[]> {
+  return getSpotsByCategory("카페");
 }
 
 // 인기 맛집 가져오기 (Yellow 색상 그룹의 맛집을 인기 맛집으로 설정)
 export async function getPopularRestaurants(
   limit: number = 4
-): Promise<Establishment[]> {
-  const restaurants = await getEstablishmentsByColor("Yellow", "맛집");
+): Promise<Spot[]> {
+  const restaurants = await getSpotsByColor("Yellow", "맛집");
   return restaurants.slice(0, limit);
 }
 
 // 인기 카페 가져오기 (Yellow 색상 그룹의 카페를 인기 카페로 설정)
-export async function getPopularCafes(
-  limit: number = 4
-): Promise<Establishment[]> {
-  const cafes = await getEstablishmentsByColor("Yellow", "카페");
+export async function getPopularCafes(limit: number = 4): Promise<Spot[]> {
+  const cafes = await getSpotsByColor("Yellow", "카페");
   return cafes.slice(0, limit);
+}
+
+// 맛집/카페 등록 함수 추가
+export async function addSpot(data: {
+  name: string;
+  category_id: number;
+  color_id: number;
+  url: string;
+  description: string;
+  emoji: string;
+}) {
+  console.log("등록 데이터:", data);
+
+  try {
+    const { data: insertedData, error } = await supabase
+      .from("spots")
+      .insert([data])
+      .select();
+
+    if (error) {
+      console.error("맛집/카페 등록 오류:", error);
+      throw new Error(
+        `맛집/카페 등록 중 오류가 발생했습니다: ${error.message}`
+      );
+    }
+
+    console.log("등록 성공:", insertedData);
+    return insertedData;
+  } catch (err) {
+    console.error("Supabase 오류:", err);
+    throw err;
+  }
+}
+
+// 공지사항 목록 가져오기
+export async function getNotices(): Promise<Notice[]> {
+  const { data, error } = await supabase
+    .from("notices")
+    .select("*")
+    .order("created_at", { ascending: false });
+
+  if (error) {
+    console.error("공지사항 목록 가져오기 오류:", error);
+    return [];
+  }
+
+  return data || [];
+}
+
+// 공지사항 상세 정보 가져오기
+export async function getNoticeById(id: number): Promise<Notice | null> {
+  const { data, error } = await supabase
+    .from("notices")
+    .select("*")
+    .eq("id", id)
+    .single();
+
+  if (error) {
+    console.error(`공지사항 상세 정보 가져오기 오류: ${id}`, error);
+    return null;
+  }
+
+  return data;
 }

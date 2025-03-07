@@ -7,6 +7,7 @@ export default function Header() {
   const navItems = [
     { href: "/", text: "맛집" },
     { href: "/cafe", text: "카페" },
+    { href: "/notice", text: "공지" },
   ];
 
   const handleNewRegistration = () => {
@@ -14,19 +15,24 @@ export default function Header() {
   };
 
   return (
-    <header className="bg-white shadow-sm p-4 border-b border-slate-200/80">
-      <div className="container mx-auto relative flex items-center justify-between">
-        <Link href="/" className="flex items-center space-x-4">
-          <div className="relative w-10 h-10">
+    <header className="bg-white shadow-sm p-3 sm:p-4 border-b border-slate-200/80">
+      <div className="container mx-auto px-4 relative flex items-center">
+        <div className="flex items-center w-1/4">
+          <div className="relative w-8 h-8 sm:w-10 sm:h-10">
+            <Link
+              href="/"
+              className="absolute inset-0 z-10 cursor-pointer"
+              aria-label="홈으로 이동"
+            ></Link>
             <Image
               src="/logo.svg"
               alt="DDP 로고"
               fill
-              className="object-contain"
+              className="object-contain pointer-events-none"
               priority
             />
           </div>
-          <div className="hidden sm:flex flex-col">
+          <div className="hidden sm:flex flex-col ml-2">
             <span className="font-bold text-slate-700 text-lg leading-tight">
               DDP
             </span>
@@ -34,15 +40,15 @@ export default function Header() {
               Dongdaemun Dealicious sPot
             </span>
           </div>
-        </Link>
+        </div>
 
-        <div className="absolute inset-x-0 flex justify-center">
-          <nav className="flex space-x-8">
+        <div className="flex-1 flex justify-center">
+          <nav className="flex space-x-4 sm:space-x-8">
             {navItems.map((item) => (
               <Link
                 key={item.href}
                 href={item.href}
-                className="font-medium text-slate-500 hover:text-yellow-500 transition-colors duration-300"
+                className="font-medium text-sm sm:text-base text-slate-500 hover:text-yellow-500 transition-colors duration-300"
               >
                 {item.text}
               </Link>
@@ -50,12 +56,14 @@ export default function Header() {
           </nav>
         </div>
 
-        <button
-          onClick={handleNewRegistration}
-          className="bg-yellow-400 text-white px-4 py-2 rounded-md font-medium hover:bg-yellow-500 active:bg-yellow-600 focus:outline-none focus:ring-2 focus:ring-yellow-300 transform hover:scale-105 active:scale-95 transition-all duration-200 shadow-sm cursor-pointer"
-        >
-          신규 등록
-        </button>
+        <div className="flex justify-end w-1/4">
+          <Link
+            href="/new"
+            className="bg-yellow-400 text-white px-2 sm:px-4 py-1.5 sm:py-2 text-sm sm:text-base rounded-md font-medium hover:bg-yellow-500 active:bg-yellow-600 focus:outline-none focus:ring-2 focus:ring-yellow-300 transform hover:scale-105 active:scale-95 transition-all duration-200 shadow-sm cursor-pointer"
+          >
+            신규 등록
+          </Link>
+        </div>
       </div>
     </header>
   );
