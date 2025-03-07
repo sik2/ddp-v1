@@ -10,10 +10,6 @@ export default function Header() {
     { href: "/notice", text: "공지" },
   ];
 
-  const handleNewRegistration = () => {
-    alert("준비중입니다.");
-  };
-
   return (
     <header className="bg-white shadow-sm p-3 sm:p-4 border-b border-slate-200/80">
       <div className="container mx-auto px-4 relative flex items-center">

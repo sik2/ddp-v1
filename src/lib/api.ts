@@ -183,14 +183,7 @@ export async function getPopularCafes(limit: number = 4): Promise<Spot[]> {
 }
 
 // 맛집/카페 등록 함수 추가
-export async function addSpot(data: {
-  name: string;
-  category_id: number;
-  color_id: number;
-  url: string;
-  description: string;
-  emoji: string;
-}) {
+export async function addSpot(data: SpotInput) {
   console.log("등록 데이터:", data);
 
   try {
