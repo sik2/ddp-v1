@@ -1,7 +1,7 @@
-import { Establishment } from "@/types";
+import { Spot } from "@/types";
 
 interface EstablishmentCardProps {
-  establishment: Establishment;
+  establishment: Spot;
 }
 
 export default function EstablishmentCard({
