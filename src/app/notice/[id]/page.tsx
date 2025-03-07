@@ -7,16 +7,14 @@ import { notFound } from "next/navigation";
 import NoticeCommentsSection from "@/app/components/NoticeCommentsSection";
 import { Notice } from "@/types";
 
-// Next.js 15.2.1에 맞는 타입 정의
-type PageProps = {
-  params: { id: string };
-  searchParams: Record<string, string | string[] | undefined>;
-};
-
 /**
  * 공지사항 상세 페이지
  */
-export default async function NoticeDetailPage({ params }: PageProps) {
+export default async function NoticeDetailPage({
+  params,
+}: {
+  params: { id: string };
+}) {
   const noticeId = parseInt(params.id);
 
   // 공지사항 상세 정보 가져오기
