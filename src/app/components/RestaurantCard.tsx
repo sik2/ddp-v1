@@ -1,7 +1,6 @@
 interface RestaurantCardProps {
   name: string;
   category: string;
-  location: string;
   rating: number;
   views: number;
   date: string;
@@ -12,7 +11,6 @@ interface RestaurantCardProps {
 export default function RestaurantCard({
   name,
   category,
-  location,
   rating,
   views,
   date,
@@ -41,17 +39,16 @@ export default function RestaurantCard({
             </span>
           </div>
         </div>
-        <h3 className="text-xl font-bold mb-2 text-slate-700">{name}</h3>
-        <p className="text-slate-500 mb-2">{location}</p>
+        <h3 className="text-xl font-bold mb-3 text-slate-700">{name}</h3>
         {mapUrl ? (
           <a
             href={mapUrl}
             target="_blank"
             rel="noopener noreferrer"
-            className="text-blue-500 mb-4 hover:text-yellow-500 transition-colors duration-300 flex items-center text-sm"
+            className="text-blue-500 mb-4 hover:text-yellow-500 transition-colors duration-300 flex items-center text-base font-medium"
           >
             <svg
-              className="w-4 h-4 mr-1"
+              className="w-5 h-5 mr-2"
               fill="none"
               stroke="currentColor"
               viewBox="0 0 24 24"
@@ -73,7 +70,7 @@ export default function RestaurantCard({
             네이버 지도에서 보기
           </a>
         ) : null}
-        <div className="flex items-center justify-between text-sm text-slate-500">
+        <div className="flex items-center justify-between text-sm text-slate-500 mt-3">
           <span>조회수 {views.toLocaleString()}</span>
           <span>{date}</span>
         </div>
