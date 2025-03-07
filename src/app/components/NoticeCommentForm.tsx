@@ -2,12 +2,7 @@
 
 import { useState } from "react";
 import { addNoticeComment } from "@/lib/api";
-import { NoticeComment } from "@/types";
-
-interface NoticeCommentFormProps {
-  noticeId: number;
-  onCommentAdded: (comment: NoticeComment) => void;
-}
+import { NoticeComment, NoticeCommentFormProps } from "@/types";
 
 export default function NoticeCommentForm({
   noticeId,

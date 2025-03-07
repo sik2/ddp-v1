@@ -1,6 +1,19 @@
 import { supabase } from "./supabase";
 import { Spot, Category, Color, Notice, NoticeComment } from "../types";
 
+/**
+ * 새로운 맛집/카페 등록을 위한 타입
+ */
+type SpotInput = Omit<
+  Spot,
+  "id" | "created_at" | "updated_at" | "category" | "color"
+>;
+
+/**
+ * 새로운 공지사항 댓글 등록을 위한 타입
+ */
+type NoticeCommentInput = Pick<NoticeComment, "notice_id" | "content">;
+
 // 카테고리 가져오기
 export async function getCategories(): Promise<Category[]> {
   const { data, error } = await supabase
@@ -250,21 +263,25 @@ export async function getNoticeComments(
   return data || [];
 }
 
-// 공지사항 댓글 추가하기
-export async function addNoticeComment(data: {
-  notice_id: number;
-  content: string;
-}): Promise<NoticeComment | null> {
-  const { data: insertedData, error } = await supabase
-    .from("notice_comments")
-    .insert([data])
-    .select()
-    .single();
+// 공지사항 댓글 추가
+export async function addNoticeComment(
+  data: NoticeCommentInput
+): Promise<NoticeComment | null> {
+  try {
+    const { data: insertedData, error } = await supabase
+      .from("notice_comments")
+      .insert([data])
+      .select()
+      .single();
 
-  if (error) {
-    console.error("댓글 추가 오류:", error);
+    if (error) {
+      console.error("댓글 등록 오류:", error);
+      return null;
+    }
+
+    return insertedData;
+  } catch (err) {
+    console.error("Supabase 댓글 등록 오류:", err);
     return null;
   }
-
-  return insertedData;
 }

@@ -1,9 +1,5 @@
-import { NoticeComment } from "@/types";
+import { NoticeComment, NoticeCommentListProps } from "@/types";
 import { formatDate } from "@/lib/utils";
-
-interface NoticeCommentListProps {
-  comments: NoticeComment[];
-}
 
 export default function NoticeCommentList({
   comments,

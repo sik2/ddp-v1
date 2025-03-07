@@ -4,7 +4,8 @@ import Link from "next/link";
 import { getNoticeById, getNoticeComments } from "@/lib/api";
 import { formatDate, nl2br } from "@/lib/utils";
 import { notFound } from "next/navigation";
-import NoticeComments from "./comments";
+import NoticeCommentsSection from "@/app/components/NoticeCommentsSection";
+import { Notice } from "@/types";
 
 interface NoticeDetailPageProps {
   params: {
@@ -12,6 +13,9 @@ interface NoticeDetailPageProps {
   };
 }
 
+/**
+ * 공지사항 상세 페이지
+ */
 export default async function NoticeDetailPage({
   params,
 }: NoticeDetailPageProps) {
@@ -30,67 +34,77 @@ export default async function NoticeDetailPage({
 
   return (
     <main className="min-h-screen">
-      {/* 헤더 영역 */}
       <Header />
 
-      {/* 공지사항 상세 영역 */}
       <div className="container mx-auto mt-8 sm:mt-10 md:mt-12 px-4 mb-16">
-        <div className="bg-white rounded-xl border border-slate-200/80 shadow-sm p-4 sm:p-6">
-          <div className="mb-4">
-            <Link
-              href="/notice"
-              className="text-sm text-purple-500 hover:text-purple-700 transition-colors duration-150 flex items-center"
-            >
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                className="h-4 w-4 mr-1"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M10 19l-7-7m0 0l7-7m-7 7h18"
-                />
-              </svg>
-              목록으로
-            </Link>
-          </div>
-
-          <div className="border-b border-slate-200 pb-4 mb-6">
-            <div className="flex items-center mb-2">
-              <h1 className="text-2xl sm:text-3xl font-bold text-slate-800">
-                {notice.title}
-              </h1>
-            </div>
-            <div className="text-sm text-slate-500">
-              <span>등록일: {formatDate(notice.created_at)}</span>
-              {notice.updated_at !== notice.created_at && (
-                <span className="ml-4">
-                  수정일: {formatDate(notice.updated_at)}
-                </span>
-              )}
-            </div>
-          </div>
-
-          <div className="prose max-w-none">
-            <div
-              dangerouslySetInnerHTML={{ __html: nl2br(notice.content) }}
-              className="text-slate-700 leading-relaxed whitespace-pre-line"
-            />
-          </div>
-        </div>
+        {/* 공지사항 상세 내용 */}
+        <NoticeDetailContent notice={notice} />
 
         {/* 댓글 영역 */}
         {notice.allow_comments && (
-          <NoticeComments noticeId={noticeId} initialComments={comments} />
+          <NoticeCommentsSection
+            noticeId={noticeId}
+            initialComments={comments}
+          />
         )}
       </div>
 
-      {/* 푸터 영역 */}
       <Footer />
     </main>
+  );
+}
+
+/**
+ * 공지사항 상세 내용 컴포넌트
+ */
+function NoticeDetailContent({ notice }: { notice: Notice }) {
+  return (
+    <div className="bg-white rounded-xl border border-slate-200/80 shadow-sm p-4 sm:p-6">
+      <div className="mb-4">
+        <Link
+          href="/notice"
+          className="text-sm text-purple-500 hover:text-purple-700 transition-colors duration-150 flex items-center"
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            className="h-4 w-4 mr-1"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth={2}
+              d="M10 19l-7-7m0 0l7-7m-7 7h18"
+            />
+          </svg>
+          목록으로
+        </Link>
+      </div>
+
+      <div className="border-b border-slate-200 pb-4 mb-6">
+        <div className="flex items-center mb-2">
+          <h1 className="text-2xl sm:text-3xl font-bold text-slate-800">
+            {notice.title}
+          </h1>
+        </div>
+        <div className="text-sm text-slate-500">
+          <span>등록일: {formatDate(notice.created_at)}</span>
+          {notice.updated_at !== notice.created_at && (
+            <span className="ml-4">
+              수정일: {formatDate(notice.updated_at)}
+            </span>
+          )}
+        </div>
+      </div>
+
+      <div className="prose max-w-none">
+        <div
+          dangerouslySetInnerHTML={{ __html: nl2br(notice.content) }}
+          className="text-slate-700 leading-relaxed whitespace-pre-line"
+        />
+      </div>
+    </div>
   );
 }
