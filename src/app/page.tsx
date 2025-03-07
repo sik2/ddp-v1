@@ -2,7 +2,6 @@ import Header from "./components/Header";
 import SearchFilter from "./components/SearchFilter";
 import Footer from "./components/Footer";
 import Image from "next/image";
-import SpotCard from "./components/SpotCard";
 import { getRestaurants } from "@/lib/api";
 import { Spot } from "@/types";
 

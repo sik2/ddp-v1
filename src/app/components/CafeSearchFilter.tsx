@@ -1,17 +1,17 @@
 "use client";
 
 import { useState, useEffect, useRef } from "react";
-import { Establishment } from "@/types";
-import EstablishmentCard from "./EstablishmentCard";
+import { Spot } from "@/types";
+import SpotCard from "./SpotCard";
 
 interface CafeSearchFilterProps {
-  allCafes: Establishment[];
+  allCafes: Spot[];
 }
 
 export default function CafeSearchFilter({ allCafes }: CafeSearchFilterProps) {
   const [selectedArea, setSelectedArea] = useState("영역선택");
   const [isOpen, setIsOpen] = useState(false);
-  const [filteredCafes, setFilteredCafes] = useState<Establishment[]>([]);
+  const [filteredCafes, setFilteredCafes] = useState<Spot[]>([]);
   const dropdownRef = useRef<HTMLDivElement>(null);
 
   const areas = [
@@ -139,9 +139,7 @@ export default function CafeSearchFilter({ allCafes }: CafeSearchFilterProps) {
         </h2>
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
           {filteredCafes.length > 0 ? (
-            filteredCafes.map((cafe) => (
-              <EstablishmentCard key={cafe.id} establishment={cafe} />
-            ))
+            filteredCafes.map((cafe) => <SpotCard key={cafe.id} spot={cafe} />)
           ) : (
             <p className="col-span-full text-center py-8 text-slate-500">
               해당 영역에 카페가 없습니다.

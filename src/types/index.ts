@@ -36,7 +36,16 @@ export interface Notice {
   id: number;
   title: string;
   content: string;
+  allow_comments: boolean;
   created_at: string;
   updated_at: string;
-  is_important: boolean;
+}
+
+// 공지사항 댓글 타입 정의
+export interface NoticeComment {
+  id: number;
+  notice_id: number;
+  content: string;
+  created_at: string;
+  updated_at: string;
 }

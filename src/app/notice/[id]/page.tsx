@@ -1,9 +1,10 @@
 import Header from "../../components/Header";
 import Footer from "../../components/Footer";
 import Link from "next/link";
-import { getNoticeById } from "@/lib/api";
+import { getNoticeById, getNoticeComments } from "@/lib/api";
 import { formatDate, nl2br } from "@/lib/utils";
 import { notFound } from "next/navigation";
+import NoticeComments from "./comments";
 
 interface NoticeDetailPageProps {
   params: {
@@ -23,6 +24,9 @@ export default async function NoticeDetailPage({
   if (!notice) {
     notFound();
   }
+
+  // 공지사항 댓글 목록 가져오기
+  const comments = await getNoticeComments(noticeId);
 
   return (
     <main className="min-h-screen">
@@ -51,7 +55,7 @@ export default async function NoticeDetailPage({
                   d="M10 19l-7-7m0 0l7-7m-7 7h18"
                 />
               </svg>
-              목록으로 돌아가기
+              목록으로
             </Link>
           </div>
 
@@ -78,6 +82,11 @@ export default async function NoticeDetailPage({
             />
           </div>
         </div>
+
+        {/* 댓글 영역 */}
+        {notice.allow_comments && (
+          <NoticeComments noticeId={noticeId} initialComments={comments} />
+        )}
       </div>
 
       {/* 푸터 영역 */}

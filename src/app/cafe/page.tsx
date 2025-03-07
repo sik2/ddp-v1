@@ -2,13 +2,12 @@ import Header from "../components/Header";
 import CafeSearchFilter from "../components/CafeSearchFilter";
 import Footer from "../components/Footer";
 import Image from "next/image";
-import EstablishmentCard from "../components/EstablishmentCard";
 import { getCafes } from "@/lib/api";
-import { Establishment } from "@/types";
+import { Spot } from "@/types";
 
 export default async function CafePage() {
   // Supabase에서 카페 데이터 가져오기
-  const cafes: Establishment[] = await getCafes();
+  const cafes: Spot[] = await getCafes();
 
   return (
     <main className="min-h-screen">

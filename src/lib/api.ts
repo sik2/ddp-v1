@@ -1,5 +1,5 @@
 import { supabase } from "./supabase";
-import { Spot, Category, Color, Notice } from "../types";
+import { Spot, Category, Color, Notice, NoticeComment } from "../types";
 
 // 카테고리 가져오기
 export async function getCategories(): Promise<Category[]> {
@@ -230,4 +230,41 @@ export async function getNoticeById(id: number): Promise<Notice | null> {
   }
 
   return data;
+}
+
+// 공지사항 댓글 목록 가져오기
+export async function getNoticeComments(
+  noticeId: number
+): Promise<NoticeComment[]> {
+  const { data, error } = await supabase
+    .from("notice_comments")
+    .select("*")
+    .eq("notice_id", noticeId)
+    .order("created_at", { ascending: true });
+
+  if (error) {
+    console.error(`공지사항 댓글 목록 가져오기 오류: ${noticeId}`, error);
+    return [];
+  }
+
+  return data || [];
+}
+
+// 공지사항 댓글 추가하기
+export async function addNoticeComment(data: {
+  notice_id: number;
+  content: string;
+}): Promise<NoticeComment | null> {
+  const { data: insertedData, error } = await supabase
+    .from("notice_comments")
+    .insert([data])
+    .select()
+    .single();
+
+  if (error) {
+    console.error("댓글 추가 오류:", error);
+    return null;
+  }
+
+  return insertedData;
 }
