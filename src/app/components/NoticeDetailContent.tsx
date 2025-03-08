@@ -18,8 +18,13 @@ export default function NoticeDetailContent({
   const [notice, setNotice] = useState<Notice>(initialNotice);
   const [isLoading, setIsLoading] = useState(false);
 
-  // 페이지 로드 시 새로 데이터 가져오기
+  // 페이지 로드 시 새로 데이터 가져오기 - 필요한 경우에만 활성화
   useEffect(() => {
+    // 서버에서 받은 데이터가 있으면 추가 요청 없이 사용
+    if (initialNotice && Object.keys(initialNotice).length > 0) {
+      return;
+    }
+
     const fetchNotice = async () => {
       setIsLoading(true);
       try {
@@ -35,7 +40,7 @@ export default function NoticeDetailContent({
     };
 
     fetchNotice();
-  }, [noticeId]);
+  }, [noticeId, initialNotice]);
 
   return (
     <div className="bg-white rounded-xl border border-slate-200/80 shadow-sm p-4 sm:p-6 relative">

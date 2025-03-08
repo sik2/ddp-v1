@@ -17,8 +17,13 @@ export default function NoticeCommentsSection({
   const [comments, setComments] = useState<NoticeComment[]>(initialComments);
   const [isLoading, setIsLoading] = useState(false);
 
-  // 페이지 로드 시 새로 데이터 가져오기
+  // 페이지 로드 시 새로 데이터 가져오기 - 필요한 경우에만 활성화
   useEffect(() => {
+    // 서버에서 받은 데이터가 있으면 추가 요청 없이 사용
+    if (initialComments && initialComments.length > 0) {
+      return;
+    }
+
     const fetchComments = async () => {
       setIsLoading(true);
       try {
@@ -32,7 +37,7 @@ export default function NoticeCommentsSection({
     };
 
     fetchComments();
-  }, [noticeId]);
+  }, [noticeId, initialComments]);
 
   const handleCommentAdded = (newComment: NoticeComment) => {
     setComments((prevComments) => [...prevComments, newComment]);

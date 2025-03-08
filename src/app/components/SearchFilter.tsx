@@ -27,6 +27,11 @@ export default function SearchFilter({ initialSpots }: SearchFilterProps) {
 
   // 페이지 로드 시 데이터 새로 가져오기
   useEffect(() => {
+    // 서버에서 받은 데이터가 있으면 추가 요청 없이 사용
+    if (initialSpots && initialSpots.length > 0) {
+      return;
+    }
+
     const fetchData = async () => {
       setIsLoading(true);
       try {
@@ -41,7 +46,7 @@ export default function SearchFilter({ initialSpots }: SearchFilterProps) {
     };
 
     fetchData();
-  }, []);
+  }, [initialSpots]);
 
   const getSelectedColor = () => {
     const selected = areas.find((area) => area.name === selectedArea);
@@ -78,29 +83,6 @@ export default function SearchFilter({ initialSpots }: SearchFilterProps) {
       document.removeEventListener("mousedown", handleClickOutside);
     };
   }, []);
-
-  // 새로고침 버튼 추가
-  const handleRefresh = async () => {
-    setIsLoading(true);
-    try {
-      const spots = await getSpots();
-      setAllSpots(spots);
-
-      // 현재 선택된 필터에 맞게 데이터 업데이트
-      if (selectedArea === "영역선택") {
-        setFilteredSpots(spots);
-      } else {
-        const filtered = spots.filter(
-          (spot) => spot.color?.name === selectedArea
-        );
-        setFilteredSpots(filtered);
-      }
-    } catch (error) {
-      console.error("맛집 데이터 새로고침 오류:", error);
-    } finally {
-      setIsLoading(false);
-    }
-  };
 
   return (
     <div>
@@ -169,29 +151,6 @@ export default function SearchFilter({ initialSpots }: SearchFilterProps) {
             </div>
           )}
         </div>
-
-        {/* 새로고침 버튼 추가 */}
-        <button
-          onClick={handleRefresh}
-          className="p-3 border border-slate-200 rounded-md focus:outline-none focus:ring-2 focus:ring-yellow-400 focus:border-yellow-400 transition-all duration-300 text-slate-600 bg-white hover:border-yellow-300 shadow-sm flex items-center justify-center"
-          disabled={isLoading}
-        >
-          <svg
-            className={`w-5 h-5 mr-1 ${isLoading ? "animate-spin" : ""}`}
-            fill="none"
-            stroke="currentColor"
-            viewBox="0 0 24 24"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth="2"
-              d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"
-            ></path>
-          </svg>
-          {isLoading ? "로딩 중..." : "새로고침"}
-        </button>
       </div>
 
       {/* 필터링된 맛집 목록 */}

@@ -14,8 +14,46 @@ type SpotInput = Omit<
  */
 type NoticeCommentInput = Pick<NoticeComment, "notice_id" | "content">;
 
+// 간단한 메모리 캐시 구현
+interface CacheItem<T> {
+  data: T;
+  timestamp: number;
+}
+
+const cache: Record<string, CacheItem<any>> = {};
+
+// 캐시 유효 시간 (밀리초)
+const CACHE_TTL = 60000; // 60초
+
+// 캐시에서 데이터 가져오기
+function getFromCache<T>(key: string): T | null {
+  const item = cache[key];
+  if (!item) return null;
+
+  const now = Date.now();
+  if (now - item.timestamp > CACHE_TTL) {
+    // 캐시 만료
+    delete cache[key];
+    return null;
+  }
+
+  return item.data;
+}
+
+// 캐시에 데이터 저장
+function setToCache<T>(key: string, data: T): void {
+  cache[key] = {
+    data,
+    timestamp: Date.now(),
+  };
+}
+
 // 카테고리 가져오기
 export async function getCategories(): Promise<Category[]> {
+  const cacheKey = "categories";
+  const cachedData = getFromCache<Category[]>(cacheKey);
+  if (cachedData) return cachedData;
+
   const { data, error } = await supabase
     .from("categories")
     .select("*")
@@ -26,11 +64,17 @@ export async function getCategories(): Promise<Category[]> {
     return [];
   }
 
-  return data || [];
+  const result = data || [];
+  setToCache(cacheKey, result);
+  return result;
 }
 
 // 색상 가져오기
 export async function getColors(): Promise<Color[]> {
+  const cacheKey = "colors";
+  const cachedData = getFromCache<Color[]>(cacheKey);
+  if (cachedData) return cachedData;
+
   const { data, error } = await supabase.from("colors").select("*").order("id");
 
   if (error) {
@@ -38,7 +82,9 @@ export async function getColors(): Promise<Color[]> {
     return [];
   }
 
-  return data || [];
+  const result = data || [];
+  setToCache(cacheKey, result);
+  return result;
 }
 
 // 모든 맛집 및 카페 데이터 가져오기
@@ -207,6 +253,10 @@ export async function addSpot(data: SpotInput) {
 
 // 공지사항 목록 가져오기
 export async function getNotices(): Promise<Notice[]> {
+  const cacheKey = "notices";
+  const cachedData = getFromCache<Notice[]>(cacheKey);
+  if (cachedData) return cachedData;
+
   const { data, error } = await supabase
     .from("notices")
     .select("*")
@@ -217,11 +267,17 @@ export async function getNotices(): Promise<Notice[]> {
     return [];
   }
 
-  return data || [];
+  const result = data || [];
+  setToCache(cacheKey, result);
+  return result;
 }
 
 // 공지사항 상세 정보 가져오기
 export async function getNoticeById(id: number): Promise<Notice | null> {
+  const cacheKey = `notice_${id}`;
+  const cachedData = getFromCache<Notice | null>(cacheKey);
+  if (cachedData) return cachedData;
+
   const { data, error } = await supabase
     .from("notices")
     .select("*")
@@ -233,6 +289,7 @@ export async function getNoticeById(id: number): Promise<Notice | null> {
     return null;
   }
 
+  setToCache(cacheKey, data);
   return data;
 }
 
@@ -240,6 +297,10 @@ export async function getNoticeById(id: number): Promise<Notice | null> {
 export async function getNoticeComments(
   noticeId: number
 ): Promise<NoticeComment[]> {
+  const cacheKey = `notice_comments_${noticeId}`;
+  const cachedData = getFromCache<NoticeComment[]>(cacheKey);
+  if (cachedData) return cachedData;
+
   const { data, error } = await supabase
     .from("notice_comments")
     .select("*")
@@ -251,7 +312,9 @@ export async function getNoticeComments(
     return [];
   }
 
-  return data || [];
+  const result = data || [];
+  setToCache(cacheKey, result);
+  return result;
 }
 
 // 공지사항 댓글 추가
@@ -269,6 +332,10 @@ export async function addNoticeComment(
       console.error("댓글 등록 오류:", error);
       return null;
     }
+
+    // 댓글이 추가되면 해당 공지사항의 댓글 캐시 무효화
+    const cacheKey = `notice_comments_${data.notice_id}`;
+    delete cache[cacheKey];
 
     return insertedData;
   } catch (err) {
