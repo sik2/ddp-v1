@@ -20,7 +20,8 @@ interface CacheItem<T> {
   timestamp: number;
 }
 
-const cache: Record<string, CacheItem<any>> = {};
+// any 대신 unknown 타입 사용
+const cache: Record<string, CacheItem<unknown>> = {};
 
 // 캐시 유효 시간 (밀리초)
 const CACHE_TTL = 60000; // 60초
@@ -37,7 +38,7 @@ function getFromCache<T>(key: string): T | null {
     return null;
   }
 
-  return item.data;
+  return item.data as T;
 }
 
 // 캐시에 데이터 저장
