@@ -1,7 +1,6 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { useRouter } from "next/navigation";
 import { addSpot, getCategories, getColors } from "@/lib/api";
 import { Category, Color } from "@/types";
 import Toast from "./Toast";
@@ -60,7 +59,6 @@ const emojiOptions = [
 ];
 
 export default function RegisterForm() {
-  const router = useRouter();
   const [formData, setFormData] = useState({
     name: "",
     category_id: 1, // 기본값: 맛집
