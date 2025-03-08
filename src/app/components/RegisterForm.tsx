@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import { addSpot, getCategories, getColors } from "@/lib/api";
 import { Category, Color } from "@/types";
 import Toast from "./Toast";
+import Image from "next/image";
 
 // 이모지 목록
 const emojiOptions = [
@@ -265,6 +266,22 @@ export default function RegisterForm() {
               </option>
             ))}
           </select>
+        </div>
+
+        {/* 맛집 지도 이미지 */}
+        <div className="p-4 bg-white rounded-lg border border-slate-200/80 overflow-hidden">
+          <h3 className="text-lg font-bold mb-3 pb-1 border-b border-yellow-400 inline-block text-slate-700">
+            맛집 지도
+          </h3>
+          <div className="relative w-full h-[300px] sm:h-[500px] md:h-[600px] lg:h-[800px]">
+            <Image
+              src="/section.png"
+              alt="맛집 지도"
+              fill
+              className="object-contain rounded-lg"
+              priority
+            />
+          </div>
         </div>
 
         {/* 색상 그룹 */}
