@@ -173,17 +173,6 @@ export default function RegisterForm() {
         description: "",
         emoji: "🍚",
       });
-
-      // 현재 선택된 카테고리에 따라 리다이렉트할 페이지 결정
-      const selectedCategory = categories.find(
-        (cat) => cat.id === formData.category_id
-      );
-      const redirectPath = selectedCategory?.name === "카페" ? "/cafe" : "/";
-
-      // 1초 후 해당 리스트 페이지로 이동
-      setTimeout(() => {
-        router.push(redirectPath);
-      }, 1000);
     } catch (err) {
       console.error("등록 오류:", err);
       setError(
