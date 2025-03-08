@@ -159,7 +159,7 @@ export async function getSpotsByColor(
 }
 
 // 맛집 데이터 가져오기
-export async function getRestaurants(): Promise<Spot[]> {
+export async function getSpots(): Promise<Spot[]> {
   return getSpotsByCategory("맛집");
 }
 
@@ -169,11 +169,9 @@ export async function getCafes(): Promise<Spot[]> {
 }
 
 // 인기 맛집 가져오기 (Yellow 색상 그룹의 맛집을 인기 맛집으로 설정)
-export async function getPopularRestaurants(
-  limit: number = 4
-): Promise<Spot[]> {
-  const restaurants = await getSpotsByColor("Yellow", "맛집");
-  return restaurants.slice(0, limit);
+export async function getPopularSpots(limit: number = 4): Promise<Spot[]> {
+  const spots = await getSpotsByColor("Yellow", "맛집");
+  return spots.slice(0, limit);
 }
 
 // 인기 카페 가져오기 (Yellow 색상 그룹의 카페를 인기 카페로 설정)

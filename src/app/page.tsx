@@ -2,12 +2,12 @@ import Header from "./components/Header";
 import SearchFilter from "./components/SearchFilter";
 import Footer from "./components/Footer";
 import Image from "next/image";
-import { getRestaurants } from "@/lib/api";
+import { getSpots } from "@/lib/api";
 import { Spot } from "@/types";
 
 export default async function Home() {
   // Supabase에서 맛집 데이터 가져오기
-  const restaurants: Spot[] = await getRestaurants();
+  const spots: Spot[] = await getSpots();
 
   return (
     <main className="min-h-screen">
@@ -55,7 +55,7 @@ export default async function Home() {
       {/* 검색 필터 및 맛집 목록 영역 */}
       <div className="container mx-auto mt-8 sm:mt-10 md:mt-12 px-4">
         <div className="bg-white rounded-xl border border-slate-200/80 shadow-sm p-4 sm:p-6">
-          <SearchFilter initialSpots={restaurants} />
+          <SearchFilter initialSpots={spots} />
         </div>
       </div>
 

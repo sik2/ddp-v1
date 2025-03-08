@@ -3,7 +3,7 @@
 import { useState, useEffect, useRef } from "react";
 import { Spot } from "@/types";
 import SpotCard from "./SpotCard";
-import { getRestaurants } from "@/lib/api";
+import { getSpots } from "@/lib/api";
 
 interface SearchFilterProps {
   initialSpots: Spot[];
@@ -30,7 +30,7 @@ export default function SearchFilter({ initialSpots }: SearchFilterProps) {
     const fetchData = async () => {
       setIsLoading(true);
       try {
-        const spots = await getRestaurants();
+        const spots = await getSpots();
         setAllSpots(spots);
         setFilteredSpots(spots);
       } catch (error) {
@@ -83,7 +83,7 @@ export default function SearchFilter({ initialSpots }: SearchFilterProps) {
   const handleRefresh = async () => {
     setIsLoading(true);
     try {
-      const spots = await getRestaurants();
+      const spots = await getSpots();
       setAllSpots(spots);
 
       // 현재 선택된 필터에 맞게 데이터 업데이트
