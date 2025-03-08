@@ -1,17 +1,20 @@
-import Header from "../components/Header";
-import Footer from "../components/Footer";
-import Link from "next/link";
+import { Metadata } from "next";
+import Header from "@/app/components/Header";
+import Footer from "@/app/components/Footer";
+import NoticeList from "@/app/components/NoticeList";
 import { getNotices } from "@/lib/api";
-import { Notice } from "@/types";
-import { formatDate } from "@/lib/utils";
+
+export const metadata: Metadata = {
+  title: "공지사항 - DDP",
+  description: "DDP의 중요 소식을 확인하세요",
+};
 
 export default async function NoticePage() {
-  // 공지사항 목록 가져오기
-  const notices: Notice[] = await getNotices();
+  // 공지사항 목록 가져오기 (초기 데이터)
+  const notices = await getNotices();
 
   return (
-    <main className="min-h-screen">
-      {/* 헤더 영역 */}
+    <div className="flex flex-col min-h-screen">
       <Header />
 
       {/* 메인 배너 이미지 */}
@@ -32,63 +35,11 @@ export default async function NoticePage() {
       </div>
 
       {/* 공지사항 목록 영역 */}
-      <div className="container mx-auto mt-8 sm:mt-10 md:mt-12 px-4 mb-16">
-        <div className="bg-white rounded-xl border border-slate-200/80 shadow-sm p-4 sm:p-6">
-          <h2 className="text-xl sm:text-2xl font-bold mb-4 sm:mb-6 pb-2 border-b border-purple-400 inline-block text-slate-700">
-            공지사항 목록
-          </h2>
+      <main className="flex-grow container mx-auto mt-8 sm:mt-10 md:mt-12 px-4 mb-16">
+        <NoticeList initialNotices={notices} />
+      </main>
 
-          {notices.length === 0 ? (
-            <div className="text-center py-12">
-              <p className="text-slate-500">등록된 공지사항이 없습니다.</p>
-            </div>
-          ) : (
-            <div className="overflow-x-auto">
-              <table className="w-full border-collapse">
-                <thead>
-                  <tr className="bg-slate-50">
-                    <th className="py-3 px-4 text-left text-sm font-medium text-slate-700 border-b border-slate-200">
-                      번호
-                    </th>
-                    <th className="py-3 px-4 text-left text-sm font-medium text-slate-700 border-b border-slate-200">
-                      제목
-                    </th>
-                    <th className="py-3 px-4 text-left text-sm font-medium text-slate-700 border-b border-slate-200">
-                      등록일
-                    </th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {notices.map((notice) => (
-                    <tr
-                      key={notice.id}
-                      className="hover:bg-slate-50 transition-colors duration-150"
-                    >
-                      <td className="py-3 px-4 text-sm text-slate-600 border-b border-slate-200">
-                        {notice.id}
-                      </td>
-                      <td className="py-3 px-4 text-sm text-slate-600 border-b border-slate-200">
-                        <Link
-                          href={`/notice/${notice.id}`}
-                          className="hover:text-purple-500 transition-colors duration-150"
-                        >
-                          {notice.title}
-                        </Link>
-                      </td>
-                      <td className="py-3 px-4 text-sm text-slate-600 border-b border-slate-200">
-                        {formatDate(notice.created_at)}
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
-          )}
-        </div>
-      </div>
-
-      {/* 푸터 영역 */}
       <Footer />
-    </main>
+    </div>
   );
 }
