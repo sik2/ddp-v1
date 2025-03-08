@@ -37,21 +37,6 @@ export default function NoticeDetailContent({
     fetchNotice();
   }, [noticeId]);
 
-  // 공지사항 새로고침 함수
-  const handleRefreshNotice = async () => {
-    setIsLoading(true);
-    try {
-      const freshNotice = await getNoticeById(noticeId);
-      if (freshNotice) {
-        setNotice(freshNotice);
-      }
-    } catch (error) {
-      console.error("공지사항 새로고침 오류:", error);
-    } finally {
-      setIsLoading(false);
-    }
-  };
-
   return (
     <div className="bg-white rounded-xl border border-slate-200/80 shadow-sm p-4 sm:p-6 relative">
       {isLoading && (
@@ -60,7 +45,7 @@ export default function NoticeDetailContent({
         </div>
       )}
 
-      <div className="flex justify-between items-center mb-4">
+      <div className="mb-4">
         <Link
           href="/notice"
           className="text-sm text-purple-500 hover:text-purple-700 transition-colors duration-150 flex items-center"
@@ -81,28 +66,6 @@ export default function NoticeDetailContent({
           </svg>
           목록으로
         </Link>
-
-        <button
-          onClick={handleRefreshNotice}
-          className="px-3 py-1 text-sm border border-purple-200 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-400 focus:border-purple-400 transition-colors duration-300 text-purple-600 bg-white hover:bg-purple-50 flex items-center"
-          disabled={isLoading}
-        >
-          <svg
-            className={`w-4 h-4 mr-1 ${isLoading ? "animate-spin" : ""}`}
-            fill="none"
-            stroke="currentColor"
-            viewBox="0 0 24 24"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth="2"
-              d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"
-            ></path>
-          </svg>
-          {isLoading ? "로딩 중..." : "새로고침"}
-        </button>
       </div>
 
       <div className="border-b border-slate-200 pb-4 mb-6">
