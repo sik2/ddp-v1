@@ -3,15 +3,20 @@
 import { useState, useEffect, useRef } from "react";
 import { Spot } from "@/types";
 import SpotCard from "./SpotCard";
+import { getCafes } from "@/lib/api";
 
 interface CafeSearchFilterProps {
-  allCafes: Spot[];
+  initialCafes: Spot[];
 }
 
-export default function CafeSearchFilter({ allCafes }: CafeSearchFilterProps) {
+export default function CafeSearchFilter({
+  initialCafes,
+}: CafeSearchFilterProps) {
   const [selectedArea, setSelectedArea] = useState("영역선택");
   const [isOpen, setIsOpen] = useState(false);
-  const [filteredCafes, setFilteredCafes] = useState<Spot[]>([]);
+  const [allCafes, setAllCafes] = useState<Spot[]>(initialCafes);
+  const [filteredCafes, setFilteredCafes] = useState<Spot[]>(initialCafes);
+  const [isLoading, setIsLoading] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
 
   const areas = [
@@ -21,6 +26,24 @@ export default function CafeSearchFilter({ allCafes }: CafeSearchFilterProps) {
     { name: "Yellow", color: "bg-yellow-500" },
     { name: "Green", color: "bg-green-500" },
   ];
+
+  // 페이지 로드 시 데이터 새로 가져오기
+  useEffect(() => {
+    const fetchData = async () => {
+      setIsLoading(true);
+      try {
+        const cafes = await getCafes();
+        setAllCafes(cafes);
+        setFilteredCafes(cafes);
+      } catch (error) {
+        console.error("카페 데이터 가져오기 오류:", error);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    fetchData();
+  }, []);
 
   const getSelectedColor = () => {
     const selected = areas.find((area) => area.name === selectedArea);
@@ -41,11 +64,6 @@ export default function CafeSearchFilter({ allCafes }: CafeSearchFilterProps) {
     }
   };
 
-  // 초기 로딩 시 모든 카페 표시
-  useEffect(() => {
-    setFilteredCafes(allCafes);
-  }, [allCafes]);
-
   // 드롭다운 외부 클릭 시 닫기
   useEffect(() => {
     function handleClickOutside(event: MouseEvent) {
@@ -62,6 +80,29 @@ export default function CafeSearchFilter({ allCafes }: CafeSearchFilterProps) {
       document.removeEventListener("mousedown", handleClickOutside);
     };
   }, []);
+
+  // 새로고침 버튼 추가
+  const handleRefresh = async () => {
+    setIsLoading(true);
+    try {
+      const cafes = await getCafes();
+      setAllCafes(cafes);
+
+      // 현재 선택된 필터에 맞게 데이터 업데이트
+      if (selectedArea === "영역선택") {
+        setFilteredCafes(cafes);
+      } else {
+        const filtered = cafes.filter(
+          (cafe) => cafe.color?.name === selectedArea
+        );
+        setFilteredCafes(filtered);
+      }
+    } catch (error) {
+      console.error("카페 데이터 새로고침 오류:", error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
   return (
     <div>
@@ -130,6 +171,29 @@ export default function CafeSearchFilter({ allCafes }: CafeSearchFilterProps) {
             </div>
           )}
         </div>
+
+        {/* 새로고침 버튼 추가 */}
+        <button
+          onClick={handleRefresh}
+          className="p-3 border border-slate-200 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-blue-400 transition-all duration-300 text-slate-600 bg-white hover:border-blue-300 shadow-sm flex items-center justify-center"
+          disabled={isLoading}
+        >
+          <svg
+            className={`w-5 h-5 mr-1 ${isLoading ? "animate-spin" : ""}`}
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth="2"
+              d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"
+            ></path>
+          </svg>
+          {isLoading ? "로딩 중..." : "새로고침"}
+        </button>
       </div>
 
       {/* 필터링된 카페 목록 */}
@@ -138,7 +202,12 @@ export default function CafeSearchFilter({ allCafes }: CafeSearchFilterProps) {
           {selectedArea === "영역선택" ? "모든 카페" : `${selectedArea} 카페`}
         </h2>
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-          {filteredCafes.length > 0 ? (
+          {isLoading ? (
+            <div className="col-span-full text-center py-8">
+              <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-400 mx-auto mb-4"></div>
+              <p className="text-slate-600">데이터를 불러오는 중입니다...</p>
+            </div>
+          ) : filteredCafes.length > 0 ? (
             filteredCafes.map((cafe) => <SpotCard key={cafe.id} spot={cafe} />)
           ) : (
             <p className="col-span-full text-center py-8 text-slate-500">

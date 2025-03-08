@@ -55,7 +55,7 @@ export default async function CafePage() {
       {/* 검색 필터 및 카페 목록 영역 */}
       <div className="container mx-auto mt-8 sm:mt-10 md:mt-12 px-4">
         <div className="bg-white rounded-xl border border-slate-200/80 shadow-sm p-4 sm:p-6">
-          <CafeSearchFilter allCafes={cafes} />
+          <CafeSearchFilter initialCafes={cafes} />
         </div>
       </div>
 
