@@ -1,11 +1,6 @@
 import Image from "next/image";
 
 export default function Footer() {
-  const contactInfo = [
-    { label: "이메일", value: "support@ddp.com" },
-    { label: "전화", value: "02-123-4567" },
-  ];
-
   return (
     <footer className="bg-slate-50 py-8 border-t border-slate-200/80">
       <div className="container mx-auto px-4">
@@ -24,14 +19,6 @@ export default function Footer() {
             </div>
             <p className="text-slate-600">Dongdaemun Dealicious sPot</p>
             <p className="text-slate-500 text-sm mt-1">동대문 맛집을 한눈에</p>
-          </div>
-          <div>
-            <h4 className="font-bold mb-4 text-slate-700">고객센터</h4>
-            {contactInfo.map((info, index) => (
-              <p key={index} className="text-slate-600">
-                {info.label}: {info.value}
-              </p>
-            ))}
           </div>
         </div>
         <div className="border-t border-slate-200 mt-8 pt-8 text-center text-slate-500 text-sm">
