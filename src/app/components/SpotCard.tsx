@@ -43,19 +43,22 @@ export default function SpotCard({ spot }: SpotCardProps) {
 
   return (
     <div
-      className={`rounded-lg overflow-hidden shadow-sm border border-slate-200/80 ${getBgColor(
+      className={`rounded-lg overflow-hidden shadow-md border border-slate-200/80 ${getBgColor(
         spot.color?.name
-      )} transition-colors duration-300`}
+      )} transition-colors duration-300 flex flex-col h-[320px]`}
     >
-      <div className="relative h-48 flex items-center justify-center">
-        <span className="text-7xl">{spot.emoji}</span>
-      </div>
-      <div className="p-6">
-        <div className="flex items-center mb-2">
-          <span className="text-sm text-slate-500">{spot.category?.name}</span>
-          <div className="ml-auto">
+      <div className="flex items-center p-4 border-b border-slate-200/60">
+        <span className="text-5xl mr-3">{spot.emoji}</span>
+        <div className="flex-1">
+          <h3 className="text-lg font-bold text-slate-700 mb-1 line-clamp-1">
+            {spot.name}
+          </h3>
+          <div className="flex items-center">
+            <span className="text-xs text-slate-500">
+              {spot.category?.name}
+            </span>
             <span
-              className={`inline-block px-3 py-1 rounded-full text-xs font-semibold ${getBadgeBgColor(
+              className={`ml-2 inline-block px-2 py-0.5 rounded-full text-xs font-medium ${getBadgeBgColor(
                 spot.color?.name
               )}`}
             >
@@ -63,18 +66,19 @@ export default function SpotCard({ spot }: SpotCardProps) {
             </span>
           </div>
         </div>
-        <h3 className="text-xl font-bold mb-3 text-slate-700">{spot.name}</h3>
-        <p className="text-sm text-slate-600 mb-4 line-clamp-2">
+      </div>
+      <div className="p-5 flex-1 flex flex-col">
+        <p className="text-sm text-slate-600 mb-5 flex-1 line-clamp-8">
           {spot.description || "설명 없음"}
         </p>
         <a
           href={spot.url}
           target="_blank"
           rel="noopener noreferrer"
-          className="text-blue-500 hover:text-yellow-500 transition-colors duration-300 flex items-center text-base font-medium"
+          className="text-blue-500 hover:text-yellow-500 transition-colors duration-300 flex items-center text-sm font-medium mt-auto"
         >
           <svg
-            className="w-5 h-5 mr-2"
+            className="w-4 h-4 mr-1"
             fill="none"
             stroke="currentColor"
             viewBox="0 0 24 24"

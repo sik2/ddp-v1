@@ -29,22 +29,17 @@ export default function CafeSearchFilter({
 
   // 페이지 로드 시 데이터 새로 가져오기
   useEffect(() => {
-    // 항상 새로운 데이터를 가져오도록 수정
+    // 서버에서 받은 데이터가 있으면 추가 요청 없이 사용
+    if (initialCafes && initialCafes.length > 0) {
+      return;
+    }
+
     const fetchData = async () => {
       setIsLoading(true);
       try {
         const cafes = await getCafes();
         setAllCafes(cafes);
-
-        // 현재 선택된 필터에 맞게 데이터 업데이트
-        if (selectedArea === "영역선택") {
-          setFilteredCafes(cafes);
-        } else {
-          const filtered = cafes.filter(
-            (cafe) => cafe.color?.name === selectedArea
-          );
-          setFilteredCafes(filtered);
-        }
+        setFilteredCafes(cafes);
       } catch (error) {
         console.error("카페 데이터 가져오기 오류:", error);
       } finally {
@@ -53,7 +48,7 @@ export default function CafeSearchFilter({
     };
 
     fetchData();
-  }, [selectedArea]);
+  }, [initialCafes]);
 
   const getSelectedColor = () => {
     const selected = areas.find((area) => area.name === selectedArea);
