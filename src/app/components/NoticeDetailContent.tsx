@@ -35,7 +35,7 @@ export default function NoticeDetailContent({
     };
 
     fetchNotice();
-  }, [noticeId]);
+  }, []);
 
   return (
     <div className="bg-white rounded-xl border border-slate-200/80 shadow-sm p-4 sm:p-6 relative">

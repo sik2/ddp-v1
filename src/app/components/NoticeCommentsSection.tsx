@@ -33,16 +33,11 @@ export default function NoticeCommentsSection({
   // 페이지 로드 시 새로 데이터 가져오기
   useEffect(() => {
     fetchComments();
-  }, [noticeId]);
+  }, []); // 의존성 배열을 비워서 컴포넌트가 마운트될 때마다 데이터를 새로 가져옴
 
   const handleCommentAdded = (newComment: NoticeComment) => {
     setComments((prevComments) => [...prevComments, newComment]);
     // 댓글 추가 후 최신 데이터 다시 가져오기
-    fetchComments();
-  };
-
-  // 댓글 새로고침 핸들러
-  const handleRefreshComments = () => {
     fetchComments();
   };
 
@@ -53,31 +48,10 @@ export default function NoticeCommentsSection({
         onCommentAdded={handleCommentAdded}
       />
 
-      <div className="mt-6 mb-4 flex justify-between items-center">
+      <div className="mt-6 mb-4">
         <h3 className="text-lg font-bold text-slate-700">
           댓글 ({comments.length})
         </h3>
-        <button
-          onClick={handleRefreshComments}
-          disabled={isLoading}
-          className="text-sm text-purple-500 hover:text-purple-700 transition-colors duration-150 flex items-center"
-        >
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            className={`h-4 w-4 mr-1 ${isLoading ? "animate-spin" : ""}`}
-            fill="none"
-            viewBox="0 0 24 24"
-            stroke="currentColor"
-          >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth={2}
-              d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"
-            />
-          </svg>
-          {isLoading ? "로딩 중..." : "새로고침"}
-        </button>
       </div>
 
       {isLoading ? (
