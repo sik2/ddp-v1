@@ -204,12 +204,22 @@ export default function RegisterForm() {
         throw new Error("이름과 URL은 필수 입력 항목입니다.");
       }
 
+      // 이름 글자 수 검증
+      if (formData.name.length > 30) {
+        throw new Error("이름은 최대 30자까지 입력 가능합니다.");
+      }
+
       // URL 형식 검증 (네이버 지도 URL인지)
       if (
         !formData.url.includes("naver.me") &&
         !formData.url.includes("map.naver.com")
       ) {
         throw new Error("네이버 지도 URL을 입력해주세요.");
+      }
+
+      // 설명 글자 수 검증
+      if (formData.description && formData.description.length > 200) {
+        throw new Error("설명은 최대 200자까지 입력 가능합니다.");
       }
 
       // 콘솔에 등록 시도 로그
@@ -282,7 +292,8 @@ export default function RegisterForm() {
             htmlFor="name"
             className="block text-sm font-medium text-slate-700 mb-1"
           >
-            이름 <span className="text-red-500">*</span>
+            이름 <span className="text-red-500">*</span>{" "}
+            <span className="text-slate-500 font-normal">(최대 30자)</span>
           </label>
           <input
             type="text"
@@ -290,10 +301,14 @@ export default function RegisterForm() {
             name="name"
             value={formData.name}
             onChange={handleChange}
+            maxLength={30}
             className="w-full p-3 border border-slate-300 rounded-md focus:outline-none focus:ring-2 focus:ring-yellow-400 focus:border-yellow-400"
             placeholder="맛집/카페 이름"
             required
           />
+          <div className="mt-1 text-xs text-slate-500 flex justify-end">
+            {formData.name.length}/30자
+          </div>
         </div>
 
         {/* 카테고리 */}
@@ -407,7 +422,8 @@ export default function RegisterForm() {
             htmlFor="description"
             className="block text-sm font-medium text-slate-700 mb-1"
           >
-            설명
+            설명{" "}
+            <span className="text-slate-500 font-normal">(최대 200자)</span>
           </label>
           <textarea
             id="description"
@@ -415,9 +431,13 @@ export default function RegisterForm() {
             value={formData.description}
             onChange={handleChange}
             rows={3}
+            maxLength={200}
             className="w-full p-3 border border-slate-300 rounded-md focus:outline-none focus:ring-2 focus:ring-yellow-400 focus:border-yellow-400"
             placeholder="맛집/카페에 대한 간단한 설명을 입력해주세요."
           ></textarea>
+          <div className="mt-1 text-xs text-slate-500 flex justify-end">
+            {formData.description.length}/200자
+          </div>
         </div>
 
         {/* 이모지 선택 */}
