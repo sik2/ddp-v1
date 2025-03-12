@@ -9,7 +9,7 @@ export default function SpotCard({ spot }: SpotCardProps) {
   const getBgColor = (colorName?: string) => {
     switch (colorName?.toLowerCase()) {
       case "blue":
-        return "bg-blue-50 hover:border-blue-400";
+        return "bg-cyan-50 hover:border-cyan-400";
       case "orange":
         return "bg-orange-50 hover:border-orange-400";
       case "pink":
@@ -27,7 +27,7 @@ export default function SpotCard({ spot }: SpotCardProps) {
   const getBadgeBgColor = (colorName?: string) => {
     switch (colorName?.toLowerCase()) {
       case "blue":
-        return "bg-blue-200 text-blue-800";
+        return "bg-cyan-200 text-cyan-800";
       case "orange":
         return "bg-orange-200 text-orange-800";
       case "pink":

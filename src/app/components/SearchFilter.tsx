@@ -18,7 +18,7 @@ export default function SearchFilter({ initialSpots }: SearchFilterProps) {
   const dropdownRef = useRef<HTMLDivElement>(null);
 
   const areas = [
-    { name: "Blue", color: "bg-blue-500" },
+    { name: "Blue", color: "bg-cyan-400" },
     { name: "Orange", color: "bg-orange-500" },
     { name: "Pink", color: "bg-pink-500" },
     { name: "Yellow", color: "bg-yellow-500" },

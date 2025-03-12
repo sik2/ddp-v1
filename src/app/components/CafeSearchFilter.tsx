@@ -20,7 +20,7 @@ export default function CafeSearchFilter({
   const dropdownRef = useRef<HTMLDivElement>(null);
 
   const areas = [
-    { name: "Blue", color: "bg-blue-500" },
+    { name: "Blue", color: "bg-cyan-400" },
     { name: "Orange", color: "bg-orange-500" },
     { name: "Pink", color: "bg-pink-500" },
     { name: "Yellow", color: "bg-yellow-500" },
@@ -87,7 +87,7 @@ export default function CafeSearchFilter({
         <div className="w-full sm:flex-1 relative" ref={dropdownRef}>
           <button
             onClick={() => setIsOpen(!isOpen)}
-            className="w-full h-full p-3 border border-slate-200 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-blue-400 transition-all duration-300 text-slate-600 bg-white flex justify-between items-center hover:border-blue-300 shadow-sm"
+            className="w-full h-full p-3 border border-slate-200 rounded-md focus:outline-none focus:ring-2 focus:ring-cyan-400 focus:border-cyan-400 transition-all duration-300 text-slate-600 bg-white flex justify-between items-center hover:border-cyan-300 shadow-sm"
             type="button"
             aria-haspopup="listbox"
             aria-expanded={isOpen}
@@ -124,7 +124,7 @@ export default function CafeSearchFilter({
               role="listbox"
             >
               <div
-                className="p-3 hover:bg-blue-50 cursor-pointer transition-colors duration-150 flex items-center"
+                className="p-3 hover:bg-cyan-50 cursor-pointer transition-colors duration-150 flex items-center"
                 onClick={() => handleAreaSelect("영역선택")}
                 role="option"
                 aria-selected={selectedArea === "영역선택"}
@@ -134,7 +134,7 @@ export default function CafeSearchFilter({
               {areas.map((area) => (
                 <div
                   key={area.name}
-                  className="p-3 hover:bg-blue-50 cursor-pointer transition-colors duration-150 flex items-center"
+                  className="p-3 hover:bg-cyan-50 cursor-pointer transition-colors duration-150 flex items-center"
                   onClick={() => handleAreaSelect(area.name)}
                   role="option"
                   aria-selected={selectedArea === area.name}
@@ -152,13 +152,13 @@ export default function CafeSearchFilter({
 
       {/* 필터링된 카페 목록 */}
       <div className="mt-4">
-        <h2 className="text-xl sm:text-2xl font-bold mb-4 sm:mb-6 pb-2 border-b border-blue-400 inline-block text-slate-700">
+        <h2 className="text-xl sm:text-2xl font-bold mb-4 sm:mb-6 pb-2 border-b border-cyan-400 inline-block text-slate-700">
           {selectedArea === "영역선택" ? "모든 카페" : `${selectedArea} 카페`}
         </h2>
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
           {isLoading ? (
             <div className="col-span-full text-center py-8">
-              <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-400 mx-auto mb-4"></div>
+              <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-cyan-400 mx-auto mb-4"></div>
               <p className="text-slate-600">데이터를 불러오는 중입니다...</p>
             </div>
           ) : filteredCafes.length > 0 ? (

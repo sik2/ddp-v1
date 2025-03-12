@@ -375,7 +375,7 @@ export default function RegisterForm() {
                 <div
                   className={`w-5 h-5 sm:w-6 sm:h-6 rounded-full ${
                     color.name === "Blue"
-                      ? "bg-blue-500"
+                      ? "bg-cyan-400"
                       : color.name === "Orange"
                       ? "bg-orange-500"
                       : color.name === "Pink"
