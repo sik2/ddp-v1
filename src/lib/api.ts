@@ -24,7 +24,7 @@ interface CacheItem<T> {
 const cache: Record<string, CacheItem<unknown>> = {};
 
 // 캐시 유효 시간 (밀리초)
-const CACHE_TTL = 60000; // 60초
+const CACHE_TTL = 0; // 캐시 사용 안 함
 
 // 캐시에서 데이터 가져오기
 function getFromCache<T>(key: string): T | null {

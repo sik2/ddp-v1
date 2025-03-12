@@ -27,11 +27,6 @@ export default function SearchFilter({ initialSpots }: SearchFilterProps) {
 
   // 페이지 로드 시 데이터 새로 가져오기
   useEffect(() => {
-    // 서버에서 받은 데이터가 있으면 추가 요청 없이 사용
-    if (initialSpots && initialSpots.length > 0) {
-      return;
-    }
-
     const fetchData = async () => {
       setIsLoading(true);
       try {
@@ -46,7 +41,7 @@ export default function SearchFilter({ initialSpots }: SearchFilterProps) {
     };
 
     fetchData();
-  }, [initialSpots]);
+  }, []);
 
   const getSelectedColor = () => {
     const selected = areas.find((area) => area.name === selectedArea);
